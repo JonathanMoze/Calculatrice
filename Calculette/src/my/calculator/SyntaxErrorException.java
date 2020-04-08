@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package calculette;
+package my.calculator;
 
 /**
  *
  * @author jonat
  */
-public class Calculette {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+public class SyntaxErrorException extends Exception{
+    public SyntaxErrorException (String message){
+        super(message);
     }
-    
 }
