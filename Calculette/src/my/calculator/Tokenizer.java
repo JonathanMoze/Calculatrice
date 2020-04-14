@@ -49,7 +49,7 @@ public class Tokenizer implements Supplier<Token> {
         do {
             builder.append(line.charAt(next));
             next++;
-        } while (next <= line.length() && Character.isDigit(line.charAt(next)));
+        } while (next < line.length() && Character.isDigit(line.charAt(next)));
         return new Token(TokenType.NUMBER, builder.toString());
     }
 

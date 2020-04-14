@@ -13,18 +13,29 @@ import java.util.Scanner;
  */
 public class Calculator {
 
-    public int evaluationSomme(String line)
+    public int evaluation(String line)
             throws SyntaxErrorException, EvaluationErrorException {
         Tokenizer tockenizer = new Tokenizer(line);
         Token token = tockenizer.get();
         checkSyntax(token.isNumber(), "Number expected");
-        int total =  token.value();
-        
+        int total = token.value();
+
         token = tockenizer.get();
-        while(token.isSymbol("+")){
+        while (token.isSymbol("+")) {
+            token = tockenizer.get();
+            checkSyntax(token.isNumber(), "Number expected");
+            total += token.value();
             token = tockenizer.get();
         }
-        // A CONTINUER
+
+        while (token.isSymbol("-")) {
+            token = tockenizer.get();
+            checkSyntax(token.isNumber(), "Number expected");
+            total -= token.value();
+            token = tockenizer.get();
+        }
+        
+        checkSyntax(token.isFinish(), String.format("End of expression expected, %s found", token));
         return total;
     }
 
@@ -36,7 +47,7 @@ public class Calculator {
 
     public void boucleInteraction() {
         Scanner in = new Scanner(System.in);
-        System.out.println("Essai de boucle d'interaction");
+        System.out.println("Claculatriice : Entrez votre calcul");
         while (true) {
             System.out.print("> ");
             if (!in.hasNextLine()) {
@@ -50,7 +61,7 @@ public class Calculator {
                 break;
             }
             try {
-                int value = evaluationSomme(line);
+                int value = evaluation(line);
                 System.out.format("> %d\n", value);
             } catch (SyntaxErrorException ex) {
                 System.out.format(" ! Incorrect syntax %s\n",
