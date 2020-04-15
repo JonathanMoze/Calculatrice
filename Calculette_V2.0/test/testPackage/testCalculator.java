@@ -20,7 +20,7 @@ import org.junit.Test;
 public class testCalculator {
 
     @Test
-    public void testSums() throws SyntaxErrorException, EvaluationErrorException {
+    public void testEvaluation() throws SyntaxErrorException, EvaluationErrorException {
         Calculator calc = new Calculator();
         assertEquals(123, calc.evaluation("  123 "));
         assertEquals(4, calc.evaluation("2+2"));
