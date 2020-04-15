@@ -13,38 +13,29 @@ import java.util.Scanner;
  */
 public class Calculator {
 
+    private Tokenizer tokenizer;
+    private Token token;
+
     public int evaluation(String line)
             throws SyntaxErrorException, EvaluationErrorException {
-        Tokenizer tockenizer = new Tokenizer(line);
-        Token token = tockenizer.get();
-        checkSyntax(token.isNumber(), "Number expected");
-        int total = token.value();
 
-        token = tockenizer.get();
-        while (token.isSymbol("+")) {
-            token = tockenizer.get();
-            checkSyntax(token.isNumber(), "Number expected");
-            total += token.value();
-            token = tockenizer.get();
-        }
+        tokenizer = new Tokenizer(line);
+        token = tokenizer.get();
 
-        while (token.isSymbol("-")) {
-            token = tockenizer.get();
-            checkSyntax(token.isNumber(), "Number expected");
-            total -= token.value();
-            token = tockenizer.get();
-        }
-        
+        int value = get_expr_value();
         checkSyntax(token.isFinish(), String.format("End of expression expected, %s found", token));
-        return total;
+        
+        return value;
     }
 
+    
     private void checkSyntax(boolean condition, String message) throws SyntaxErrorException {
         if (!condition) {
             throw new SyntaxErrorException(message);
         }
     }
 
+    
     public void boucleInteraction() {
         Scanner in = new Scanner(System.in);
         System.out.println("Claculatriice : Entrez votre calcul");
@@ -72,5 +63,28 @@ public class Calculator {
             }
         }
         System.out.println("Bye.");
+    }
+
+    
+    private int get_expr_value() throws SyntaxErrorException {
+        int total = get_term_value();
+        while (token.isSymbol("+")) {
+            token = tokenizer.get();
+            total += get_term_value();
+        }
+        while (token.isSymbol("-")) {
+            token = tokenizer.get();
+            total -= get_term_value();
+        }
+        return total;
+    }
+    
+    
+    private int get_term_value() throws SyntaxErrorException{
+        checkSyntax(token.isNumber(), "Number expected");
+        int value = token.value();
+        token = tokenizer.get();
+        
+        return value;
     }
 }
