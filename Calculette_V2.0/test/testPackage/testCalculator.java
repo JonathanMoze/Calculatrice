@@ -26,7 +26,7 @@ public class testCalculator {
         assertEquals(4, calc.evaluation("2+2"));
         assertEquals(1, calc.evaluation("421-20-400"));
         assertEquals(6, calc.evaluation("2*3"));
-        assertEquals(3, calc.evaluation("7/3"));
+        assertEquals(2, calc.evaluation("7/3"));
         assertFalse(calc.evaluation("23 + 45") == 26);
     }
 

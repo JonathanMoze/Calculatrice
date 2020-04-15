@@ -48,17 +48,17 @@ public class Calculator {
             if (line.isEmpty()) {
                 continue;
             }
-            if (line.equals("\\q")) {
+            if (line.equals("exit")) {
                 break;
             }
             try {
                 int value = evaluation(line);
                 System.out.format("> %d\n", value);
             } catch (SyntaxErrorException ex) {
-                System.out.format(" ! Incorrect syntax %s\n",
+                System.out.format(" ! Incorrect syntax : %s\n",
                         ex.getMessage());
             } catch (EvaluationErrorException ex) {
-                System.out.format(" ! Evaluation failed %s\n",
+                System.out.format(" ! Evaluation failed : %s\n",
                         ex.getMessage());
             }
         }
@@ -66,7 +66,7 @@ public class Calculator {
     }
 
     
-    private int get_expr_value() throws SyntaxErrorException {
+    private int get_expr_value() throws SyntaxErrorException, EvaluationErrorException {
         int total = get_term_value();
         while (token.isSymbol("+")) {
             token = tokenizer.get();
@@ -80,11 +80,36 @@ public class Calculator {
     }
     
     
-    private int get_term_value() throws SyntaxErrorException{
+    private int get_number_value() throws SyntaxErrorException{
         checkSyntax(token.isNumber(), "Number expected");
         int value = token.value();
         token = tokenizer.get();
         
+        return value;
+    }
+    
+    
+    private int get_term_value() throws SyntaxErrorException, EvaluationErrorException{
+        int value = get_factor_value();
+        while(token.isSymbol("*")){
+            token = tokenizer.get();
+            value *= get_factor_value();
+        }
+        while(token.isSymbol("/")){
+            token = tokenizer.get();
+            try{
+            value /= get_factor_value();
+            }
+            catch(ArithmeticException ex){
+                throw new EvaluationErrorException(ex.getMessage());
+            }
+        }
+        
+        return value;
+    }
+    
+    private int get_factor_value() throws SyntaxErrorException{
+        int value = get_number_value();
         return value;
     }
 }
