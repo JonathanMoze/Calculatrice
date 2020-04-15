@@ -24,18 +24,16 @@ public class Calculator {
 
         int value = get_expr_value();
         checkSyntax(token.isFinish(), String.format("End of expression expected, %s found", token));
-        
+
         return value;
     }
 
-    
     private void checkSyntax(boolean condition, String message) throws SyntaxErrorException {
         if (!condition) {
             throw new SyntaxErrorException(message);
         }
     }
 
-    
     public void boucleInteraction() {
         Scanner in = new Scanner(System.in);
         System.out.println("Claculatriice : Entrez votre calcul");
@@ -65,7 +63,6 @@ public class Calculator {
         System.out.println("Bye.");
     }
 
-    
     private int get_expr_value() throws SyntaxErrorException, EvaluationErrorException {
         int total = get_term_value();
         while (token.isSymbol("+")) {
@@ -78,38 +75,49 @@ public class Calculator {
         }
         return total;
     }
-    
-    
-    private int get_number_value() throws SyntaxErrorException{
+
+    private int get_number_value() throws SyntaxErrorException {
         checkSyntax(token.isNumber(), "Number expected");
         int value = token.value();
         token = tokenizer.get();
-        
+
         return value;
     }
-    
-    
-    private int get_term_value() throws SyntaxErrorException, EvaluationErrorException{
+
+    private int get_term_value() throws SyntaxErrorException, EvaluationErrorException {
         int value = get_factor_value();
-        while(token.isSymbol("*")){
+        while (token.isSymbol("*")) {
             token = tokenizer.get();
             value *= get_factor_value();
         }
-        while(token.isSymbol("/")){
+        while (token.isSymbol("/")) {
             token = tokenizer.get();
-            try{
-            value /= get_factor_value();
-            }
-            catch(ArithmeticException ex){
+            try {
+                value /= get_factor_value();
+            } catch (ArithmeticException ex) {
                 throw new EvaluationErrorException(ex.getMessage());
             }
         }
-        
+
         return value;
     }
-    
-    private int get_factor_value() throws SyntaxErrorException{
-        int value = get_number_value();
-        return value;
+
+    private int get_factor_value() throws SyntaxErrorException, EvaluationErrorException {
+
+        if (token.isNumber()) {
+            return get_number_value();
+        } else if (token.isSymbol("(")) {
+            token = tokenizer.get();
+            int value = get_expr_value();
+            if (token.isSymbol(")")) {
+                token = tokenizer.get();
+            }
+            return value;
+        } else if (token.isSymbol("-")) {
+            token = tokenizer.get();
+            return -get_factor_value();
+        } else {
+            throw new SyntaxErrorException("missing \")\"");
+        }
     }
 }

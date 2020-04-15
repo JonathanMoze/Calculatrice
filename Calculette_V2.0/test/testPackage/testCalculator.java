@@ -28,6 +28,9 @@ public class testCalculator {
         assertEquals(6, calc.evaluation("2*3"));
         assertEquals(2, calc.evaluation("7/3"));
         assertFalse(calc.evaluation("23 + 45") == 26);
+        assertEquals(18, calc.evaluation("2*(4+5)"));
+        assertEquals(2, calc.evaluation("6/(2*3 - 3)"));
+        assertEquals(-12, calc.evaluation("3 * -(3+1)"));
     }
 
     @Test
