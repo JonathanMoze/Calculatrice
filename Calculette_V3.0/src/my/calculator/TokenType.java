@@ -12,6 +12,7 @@ package my.calculator;
 public enum TokenType {
     NUMBER,
     SYMBOL,
+    WORD,
     INVALID,
     END,
 }

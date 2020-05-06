@@ -5,6 +5,8 @@
  */
 package my.calculator;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -15,6 +17,7 @@ public class Calculator {
 
     private Tokenizer tokenizer;
     private Token token;
+    private Map<String, Integer> table = new HashMap<>();
 
     public int evaluation(String line)
             throws SyntaxErrorException, EvaluationErrorException {

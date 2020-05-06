@@ -42,4 +42,18 @@ public class testCalculator {
         } catch (EvaluationErrorException ex) {
         }
     }
+
+    @Test
+    void testAssignments() {
+        Calculator c = new Calculator();
+        assertEquals(12, "num = 3*4");
+        assertEquals(12, "num");
+        assertEquals(2, "den = 2");
+        assertEquals(2, "den");
+        assertEquals(6, "num / den");
+
+        assertEquals(10, "(a = 2+1) + (b = 2*3 + 1)");
+        assertEquals(3, "a");
+        assertEquals(7, "b");
+    }
 }

@@ -26,6 +26,11 @@ public class Token {
     public boolean isSymbol(String symbol) {
         return this.type == TokenType.SYMBOL && this.string.equals(symbol);
     }
+    
+    public boolean isWord(){
+        return this.type == TokenType.WORD;
+    }
+    
 
     public boolean isInvalid() {
         return this.type == TokenType.INVALID;
@@ -35,13 +40,16 @@ public class Token {
         return this.type == TokenType.END;
     }
 
-    int value() {
+    public int value() {
         return Integer.parseInt(this.string);
     }
 
-    char symbol() {
+    public char symbol() {
         return this.string.charAt(0);
     }
     
+    public String word(){
+        return this.string;
+    }
     
 }
