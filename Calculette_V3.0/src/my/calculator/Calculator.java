@@ -109,6 +109,19 @@ public class Calculator {
 
         if (token.isNumber()) {
             return get_number_value();
+        } else if (token.isWord()) {
+            String nom = token.word();
+            token = tokenizer.get();
+            if (token.isSymbol("=")) {
+                token = tokenizer.get();
+                table.put(nom, get_expr_value());
+            }
+            try {
+                return table.get(nom);
+            } catch (NullPointerException ex) {
+                throw new EvaluationErrorException(ex.getMessage());
+            }
+
         } else if (token.isSymbol("(")) {
             token = tokenizer.get();
             int value = get_expr_value();

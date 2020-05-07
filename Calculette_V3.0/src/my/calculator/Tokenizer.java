@@ -35,7 +35,7 @@ public class Tokenizer implements Supplier<Token> {
         if (Character.isDigit(first)) {
             return getNumber();
         }
-        else if(Character.isLetter(first)){
+        else if(isValidFirstCharForWord(first)){
             return getWord();
         }
         else if(SYMBOLS.indexOf(first) >= 0){
@@ -73,5 +73,9 @@ public class Tokenizer implements Supplier<Token> {
 
     private boolean isValidCharForWord(char c) {
         return c == '_' || Character.isLetter(c) || Character.isDigit(c);
+    }
+    
+    private boolean isValidFirstCharForWord (char first){
+        return Character.isLetter(first);
     }
 }

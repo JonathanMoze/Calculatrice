@@ -44,16 +44,16 @@ public class testCalculator {
     }
 
     @Test
-    void testAssignments() {
+    public void testAssignments() throws SyntaxErrorException, EvaluationErrorException {
         Calculator c = new Calculator();
-        assertEquals(12, "num = 3*4");
-        assertEquals(12, "num");
-        assertEquals(2, "den = 2");
-        assertEquals(2, "den");
-        assertEquals(6, "num / den");
+        assertEquals(12, c.evaluation("num = 3*4"));
+        assertEquals(12, c.evaluation("num"));
+        assertEquals(2, c.evaluation("den = 2"));
+        assertEquals(2, c.evaluation("den"));
+        assertEquals(6, c.evaluation("num / den"));
 
-        assertEquals(10, "(a = 2+1) + (b = 2*3 + 1)");
-        assertEquals(3, "a");
-        assertEquals(7, "b");
+        assertEquals(10, c.evaluation("(a = 2+1) + (b = 2*3 + 1)"));
+        assertEquals(3, c.evaluation("a"));
+        assertEquals(7, c.evaluation("b"));
     }
 }
