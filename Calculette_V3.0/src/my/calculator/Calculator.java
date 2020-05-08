@@ -68,13 +68,14 @@ public class Calculator {
 
     private int get_expr_value() throws SyntaxErrorException, EvaluationErrorException {
         int total = get_term_value();
-        while (token.isSymbol("+")) {
-            token = tokenizer.get();
-            total += get_term_value();
-        }
-        while (token.isSymbol("-")) {
-            token = tokenizer.get();
-            total -= get_term_value();
+        while (token.isSymbol("+") || token.isSymbol("-")) {
+            if (token.isSymbol("+")) {
+                token = tokenizer.get();
+                total += get_term_value();
+            } else {
+                token = tokenizer.get();
+                total -= get_term_value();
+            }
         }
         return total;
     }
