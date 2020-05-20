@@ -5,6 +5,7 @@
  */
 package arbres.expr;
 
+
 /**
  *
  * @author jonat
@@ -13,6 +14,7 @@ public class ExprAffectation implements Expr {
 
     private final String name;
     private final Expr expr;
+    
     public ExprAffectation(String name, Expr expr) {
         this.name = name;
         this.expr = expr;
@@ -20,12 +22,12 @@ public class ExprAffectation implements Expr {
 
     @Override
     public int valeur(Environnement env) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return expr.valeur(env);
     }
 
     @Override
     public String description() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format("L'affectaion de %s a la variable %s", expr.description(), name);
     }
     
 }

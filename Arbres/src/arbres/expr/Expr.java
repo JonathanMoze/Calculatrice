@@ -21,7 +21,8 @@ public interface Expr {
     public static Expr variable(String name, TableVariables vars){
         return new ExprVariable(name, vars.valeur(name));
     }
-    public static Expr affectation(String name, Expr expr){
+    public static Expr affectation(String name, Expr expr, TableVariables vars){
+        vars.affecter(name, expr.valeur(vars));
         return new ExprAffectation(name, expr);
     }
 

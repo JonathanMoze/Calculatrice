@@ -108,7 +108,21 @@ public class Arbres {
         // b                  33
         
         
-        afficherAvecValeur(Expr.affectation("a", Expr.constante(10)), vars);
+        afficherAvecValeur(Expr.affectation("a", Expr.constante(10), vars), vars);
+        afficherAvecValeur(Expr.affectation("a", Expr.binaire(
+                                                    Expr.variable("a", vars),
+                                                    OpBinaire.PLUS,
+                                                    Expr.constante(1)), vars), vars);
+        afficherAvecValeur(Expr.affectation("b",
+                           Expr.binaire(Expr.variable("a", vars),
+                                        OpBinaire.MUL,
+                                        Expr.variable("a", vars)), vars), vars);
+        afficherAvecValeur(Expr.variable("b", vars), vars);
+        afficherAvecValeur(Expr.affectation("a",
+                            Expr.affectation("b",
+                                    Expr.constante(33), vars), vars), vars);
+        afficherAvecValeur(Expr.variable("b", vars), vars);
+        
 
 
     }
