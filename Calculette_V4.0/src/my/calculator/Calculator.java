@@ -5,6 +5,8 @@
  */
 package my.calculator;
 
+import arbres.expr.Expr;
+import arbres.expr.OpBinaire;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -66,18 +68,20 @@ public class Calculator {
         System.out.println("Bye.");
     }
 
-    private int get_expr_value() throws SyntaxErrorException, EvaluationErrorException {
-        int total = get_term_value();
+    private Expr arbreExpr() throws SyntaxErrorException, EvaluationErrorException {
+        Expr expr = arbreTerm();
         while (token.isSymbol("+") || token.isSymbol("-")) {
             if (token.isSymbol("+")) {
                 token = tokenizer.get();
-                total += get_term_value();
+                Expr tmp = arbreTerm();
+                expr = Expr.binaire(expr, OpBinaire.PLUS, tmp);
             } else {
                 token = tokenizer.get();
-                total -= get_term_value();
+                Expr tmp = arbreTerm();
+                expr = Expr.binaire(expr, OpBinaire.MOINS, tmp);
             }
         }
-        return total;
+        return expr;
     }
 
     private int get_number_value() throws SyntaxErrorException {
@@ -88,8 +92,8 @@ public class Calculator {
         return value;
     }
 
-    private int get_term_value() throws SyntaxErrorException, EvaluationErrorException {
-        int value = get_factor_value();
+    private Expr arbreTerm() throws SyntaxErrorException, EvaluationErrorException {
+        Expr value = arbreFactor();
         while (token.isSymbol("*")) {
             token = tokenizer.get();
             value *= get_factor_value();
@@ -106,7 +110,7 @@ public class Calculator {
         return value;
     }
 
-    private int get_factor_value() throws SyntaxErrorException, EvaluationErrorException {
+    private Expr arbreFactor() throws SyntaxErrorException, EvaluationErrorException {
 
         if (token.isNumber()) {
             return get_number_value();
