@@ -7,8 +7,6 @@ package my.calculator;
 
 import arbres.expr.Expr;
 import arbres.expr.OpBinaire;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -19,15 +17,16 @@ public class Calculator {
 
     private Tokenizer tokenizer;
     private Token token;
-    private Map<String, Integer> table = new HashMap<>();
+    private TableVariables table;
 
     public int evaluation(String line)
             throws SyntaxErrorException, EvaluationErrorException {
-
+        
+        table = new TableVariables();
         tokenizer = new Tokenizer(line);
         token = tokenizer.get();
 
-        int value = get_expr_value();
+        int value = arbreExpr().valeur(table);
         checkSyntax(token.isFinish(), String.format("End of expression expected, %s found", token));
 
         return value;
@@ -84,9 +83,9 @@ public class Calculator {
         return expr;
     }
 
-    private int get_number_value() throws SyntaxErrorException {
+    private Expr arbreNumber() throws SyntaxErrorException {
         checkSyntax(token.isNumber(), "Number expected");
-        int value = token.value();
+        Expr value = Expr.constante(token.value());
         token = tokenizer.get();
 
         return value;
@@ -94,16 +93,19 @@ public class Calculator {
 
     private Expr arbreTerm() throws SyntaxErrorException, EvaluationErrorException {
         Expr value = arbreFactor();
-        while (token.isSymbol("*")) {
-            token = tokenizer.get();
-            value *= get_factor_value();
-        }
-        while (token.isSymbol("/")) {
-            token = tokenizer.get();
-            try {
-                value /= get_factor_value();
-            } catch (ArithmeticException ex) {
-                throw new EvaluationErrorException(ex.getMessage());
+        while (token.isSymbol("*") || token.isSymbol("/")) {
+            if (token.isSymbol("*")) {
+                token = tokenizer.get();
+                Expr tmp = arbreFactor();
+                value = Expr.binaire(value, OpBinaire.MUL, tmp);
+            } else {
+                token = tokenizer.get();
+                try {
+                    Expr tmp = arbreFactor();
+                    value = Expr.binaire(value, OpBinaire.DIV, tmp);
+                } catch (ArithmeticException ex) {
+                    throw new EvaluationErrorException(ex.getMessage());
+                }
             }
         }
 
@@ -113,30 +115,31 @@ public class Calculator {
     private Expr arbreFactor() throws SyntaxErrorException, EvaluationErrorException {
 
         if (token.isNumber()) {
-            return get_number_value();
+            return arbreNumber();
         } else if (token.isWord()) {
             String nom = token.word();
             token = tokenizer.get();
             if (token.isSymbol("=")) {
                 token = tokenizer.get();
-                table.put(nom, get_expr_value());
+                Expr.affectation(nom, arbreExpr(), table);
             }
             try {
-                return table.get(nom);
+                //ERREUR A CORRIGER : VARIABLES NON SAUVEGARDÉES
+                return Expr.variable(nom, table);
             } catch (NullPointerException ex) {
                 throw new EvaluationErrorException(ex.getMessage());
             }
 
         } else if (token.isSymbol("(")) {
             token = tokenizer.get();
-            int value = get_expr_value();
+            Expr value = arbreExpr();
             if (token.isSymbol(")")) {
                 token = tokenizer.get();
             }
             return value;
         } else if (token.isSymbol("-")) {
             token = tokenizer.get();
-            return -get_factor_value();
+            return Expr.binaire(Expr.constante(0), OpBinaire.MOINS, arbreFactor());
         } else {
             throw new SyntaxErrorException("missing \")\"");
         }
