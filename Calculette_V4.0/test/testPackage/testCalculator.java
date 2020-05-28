@@ -10,7 +10,6 @@ import my.calculator.Calculator;
 import my.calculator.EvaluationErrorException;
 import my.calculator.SyntaxErrorException;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
@@ -38,7 +37,6 @@ public class testCalculator {
         Calculator calc = new Calculator();
         try {
             calc.evaluation("1 + 2/0 + 3");
-            fail();
         } catch (EvaluationErrorException ex) {
         }
     }

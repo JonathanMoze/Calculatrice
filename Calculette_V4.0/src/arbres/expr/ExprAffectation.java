@@ -22,6 +22,7 @@ public class ExprAffectation implements Expr {
 
     @Override
     public int valeur(Environnement env) {
+        env.affecter(name, expr.valeur(env));
         return expr.valeur(env);
     }
 

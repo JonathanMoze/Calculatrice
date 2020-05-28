@@ -17,12 +17,11 @@ public class Calculator {
 
     private Tokenizer tokenizer;
     private Token token;
-    private TableVariables table;
+    private final TableVariables table = new TableVariables();
 
     public int evaluation(String line)
             throws SyntaxErrorException, EvaluationErrorException {
-        
-        table = new TableVariables();
+
         tokenizer = new Tokenizer(line);
         token = tokenizer.get();
 
@@ -40,7 +39,7 @@ public class Calculator {
 
     public void boucleInteraction() {
         Scanner in = new Scanner(System.in);
-        System.out.println("Claculatriice : Entrez votre calcul");
+        System.out.println("Claculatrice : Entrez votre calcul");
         while (true) {
             System.out.print("> ");
             if (!in.hasNextLine()) {
@@ -114,34 +113,35 @@ public class Calculator {
 
     private Expr arbreFactor() throws SyntaxErrorException, EvaluationErrorException {
 
+        Expr expr = Expr.constante(0);
         if (token.isNumber()) {
-            return arbreNumber();
+            expr = arbreNumber();
         } else if (token.isWord()) {
             String nom = token.word();
             token = tokenizer.get();
             if (token.isSymbol("=")) {
                 token = tokenizer.get();
-                Expr.affectation(nom, arbreExpr(), table);
-            }
-            try {
-                //ERREUR A CORRIGER : VARIABLES NON SAUVEGARDÉES
-                return Expr.variable(nom, table);
-            } catch (NullPointerException ex) {
-                throw new EvaluationErrorException(ex.getMessage());
+                expr = Expr.affectation(nom, arbreExpr(), table);
+            } else {
+                try {
+                    expr = Expr.variable(nom, table);
+                } catch (NullPointerException ex) {
+                    throw new EvaluationErrorException(ex.getMessage());
+                }
             }
 
         } else if (token.isSymbol("(")) {
             token = tokenizer.get();
-            Expr value = arbreExpr();
+            expr = arbreExpr();
             if (token.isSymbol(")")) {
                 token = tokenizer.get();
             }
-            return value;
         } else if (token.isSymbol("-")) {
             token = tokenizer.get();
-            return Expr.binaire(Expr.constante(0), OpBinaire.MOINS, arbreFactor());
+            expr = Expr.binaire(Expr.constante(0), OpBinaire.MOINS, arbreFactor());
         } else {
             throw new SyntaxErrorException("missing \")\"");
         }
+        return expr;
     }
 }
