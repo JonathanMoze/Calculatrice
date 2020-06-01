@@ -19,27 +19,26 @@ public class Calculator {
      * tokenizer pour découper l'expression
      */
     private Tokenizer tokenizer;
-    
+
     /**
      * le token courant
      */
     private Token token;
-    
+
     /**
      * la table des variables
      */
     private final TableVariables table = new TableVariables();
 
-    
     /**
-     * Fonction prinpcipale de la calculatrice permettant d'analyser
-     * l'entrée de l'utilisateur et d'envoyer la réponse
-     * 
+     * Fonction prinpcipale de la calculatrice permettant d'analyser l'entrée de
+     * l'utilisateur et d'envoyer la réponse
+     *
      * @param line ligne d'entrée dans la calculatrice
      * @return value la valeur du résultat
-     * 
+     *
      * @throws SyntaxErrorException erreur de syntaxe dans la ligne
-     * @throws EvaluationErrorException  erreur de mathématiques
+     * @throws EvaluationErrorException erreur de mathématiques
      */
     public int evaluation(String line)
             throws SyntaxErrorException, EvaluationErrorException {
@@ -53,14 +52,13 @@ public class Calculator {
         return value;
     }
 
-    
     /**
      * fonction permettant de lever une excpetion si il y a une erreur de
      * syntaxe
-     * 
+     *
      * @param condition la condition de syntaxe
      * @param message message d'erreur si la condition n'est pas bonne
-     * @throws SyntaxErrorException  erreur de syntaxe levée
+     * @throws SyntaxErrorException erreur de syntaxe levée
      */
     private void checkSyntax(boolean condition, String message) throws SyntaxErrorException {
         if (!condition) {
@@ -69,9 +67,8 @@ public class Calculator {
     }
 
     /**
-     * Fonction permettant a la calculatrice de fonctionner plusieurs fois
-     * sans redémarrer l'application et permettant d'interagir avec
-     * l'utilisateur
+     * Fonction permettant a la calculatrice de fonctionner plusieurs fois sans
+     * redémarrer l'application et permettant d'interagir avec l'utilisateur
      */
     public void boucleInteraction() {
         Scanner in = new Scanner(System.in);
@@ -101,10 +98,10 @@ public class Calculator {
         }
         System.out.println("Bye.");
     }
-    
-    
+
     /**
-     *  Fonction permettant le calcul entre deux termes d'une l'expression
+     * Fonction permettant le calcul entre deux termes d'une l'expression
+     *
      * @return expr l'expression resultat
      * @throws SyntaxErrorException erreur de syntaxe dans l'expression
      * @throws EvaluationErrorException erreur de calcul dans l'expression
@@ -128,6 +125,7 @@ public class Calculator {
     /**
      * fonction permettant de récuperer les valeurs numériques des nombres de
      * l'expression
+     *
      * @return value expression de la valeur du nombre
      * @throws SyntaxErrorException erreur de syntaxe dans l'expression
      */
@@ -139,14 +137,14 @@ public class Calculator {
         return value;
     }
 
-    
     /**
      * Fonction permettant de calculer un terme à partir de deux facteurs d'une
      * expression.
-     * 
+     *
      * @return value expression de la valeur résultat
      * @throws SyntaxErrorException erreur de syntaxe dans l'expression
-     * @throws EvaluationErrorException erreur de mathématiques dans l'expression
+     * @throws EvaluationErrorException erreur de mathématiques dans
+     * l'expression
      */
     private Expr arbreTerm() throws SyntaxErrorException, EvaluationErrorException {
         Expr value = arbreFactor();
@@ -157,21 +155,18 @@ public class Calculator {
                 value = Expr.binaire(value, OpBinaire.MUL, tmp);
             } else {
                 token = tokenizer.get();
-                try {
-                    Expr tmp = arbreFactor();
-                    value = Expr.binaire(value, OpBinaire.DIV, tmp);
-                } catch (ArithmeticException ex) {
-                    throw new EvaluationErrorException(ex.getMessage());
-                }
+                Expr tmp = arbreFactor();
+                value = Expr.binaire(value, OpBinaire.DIV, tmp);
             }
         }
 
         return value;
     }
 
-    
     /**
-     * Fonction permettant de calculer un facteur a partir de nombres, de variables.
+     * Fonction permettant de calculer un facteur a partir de nombres, de
+     * variables.
+     *
      * @return expr l'expression du résultat calculé
      * @throws SyntaxErrorException erreur de syntaxe
      * @throws EvaluationErrorException erreur de mathématiques
