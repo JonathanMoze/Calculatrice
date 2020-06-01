@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package testPackage;
 
 import static junit.framework.Assert.assertEquals;
@@ -14,10 +9,16 @@ import org.junit.Test;
 
 /**
  *
- * @author jonat
+ * @author Jonathan Moze
  */
 public class testCalculator {
 
+    
+    /**
+     * Test général de la fonction évaluation
+     * @throws SyntaxErrorException
+     * @throws EvaluationErrorException 
+     */
     @Test
     public void testEvaluation() throws SyntaxErrorException, EvaluationErrorException {
         Calculator calc = new Calculator();
@@ -32,6 +33,11 @@ public class testCalculator {
         assertEquals(-12, calc.evaluation("3 * -(3+1)"));
     }
 
+    
+    /**
+     * Test pour le cas de la division par 0
+     * @throws SyntaxErrorException 
+     */
     @Test
     public void testDivisionZero() throws SyntaxErrorException {
         Calculator calc = new Calculator();
@@ -41,6 +47,12 @@ public class testCalculator {
         }
     }
 
+    
+    /**
+     * Test pour l'assignation de valeurs a des variables
+     * @throws SyntaxErrorException
+     * @throws EvaluationErrorException 
+     */
     @Test
     public void testAssignments() throws SyntaxErrorException, EvaluationErrorException {
         Calculator c = new Calculator();

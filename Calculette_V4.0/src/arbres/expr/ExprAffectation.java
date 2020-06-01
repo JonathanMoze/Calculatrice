@@ -1,20 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arbres.expr;
 
 
 /**
  *
- * @author jonat
+ * @author Jonathan Moze
  */
 public class ExprAffectation implements Expr {
-
+    /**
+     * nom de la variable utilisée
+     */
     private final String name;
+    
+    /**
+     * Expression affectée
+     */
     private final Expr expr;
     
+    /**
+     * Constructeur de l'expression
+     * @param name le nom de variable
+     * @param expr l'expresison à affecter
+     */
     public ExprAffectation(String name, Expr expr) {
         this.name = name;
         this.expr = expr;

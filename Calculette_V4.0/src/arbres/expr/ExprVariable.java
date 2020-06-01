@@ -1,20 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arbres.expr;
 
 /**
  *
- * @author jonat
+ * @author Jonathan Moze
  */
 public class ExprVariable implements Expr {
 
+    /**
+     * nom de la variable
+     */
     private final String name;
+    
+    /**
+     * valeur de la variable
+     */
     private final int valeur;
     
-    
+    /**
+     * Constructeur de l'expression variable
+     * @param name le nom de la variable
+     * @param valeur valeur de la variable
+     */
     public ExprVariable(String name, int valeur) {
         this.name = name;
         this.valeur = valeur;

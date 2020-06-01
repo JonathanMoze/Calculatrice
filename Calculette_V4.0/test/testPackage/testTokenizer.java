@@ -7,8 +7,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * 
+ * @author Jonathan Moze
+ */
 public class testTokenizer {
-
+    
+    /**
+     * Test du token de fin
+     */
     @Test
     public void testEnd() {
         String line = "    ";
@@ -20,7 +27,11 @@ public class testTokenizer {
         assertFalse(token.isNumber());
         assertFalse(token.isSymbol("+"));
     }
-
+    
+    
+    /**
+     * Test de la construction d'un token de type number
+     */
     @Test
     public void testNumber() {
         String line = " 123   ";
@@ -34,6 +45,9 @@ public class testTokenizer {
         assertFalse(token.isSymbol("+"));
     }
 
+    /**
+     * Test de la construction d'un token symbole
+     */
     @Test
     public void testSymbol() {
         String line = " *   ";
@@ -46,6 +60,9 @@ public class testTokenizer {
         assertFalse(token.isFinish());
     }
 
+    /**
+     * test sur une séquence entière du découpage en token
+     */
     @Test
     public void testSequence() {
         String line = "12+(34)";
@@ -73,7 +90,9 @@ public class testTokenizer {
 
     }
     
-    
+    /**
+     * Test sur la construction d'un token de type mot
+     */
     @Test
     public void testWord() {
         String line = " hello  ";
@@ -86,6 +105,9 @@ public class testTokenizer {
         // etc.
     }
     
+    /**
+     * Test sur une séquence avec differents mots
+     */
     @Test
     public void testSequenceWords() {
         // pour vérifier qu'on ne consomme pas un

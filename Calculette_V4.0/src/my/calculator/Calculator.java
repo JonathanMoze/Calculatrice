@@ -11,14 +11,36 @@ import java.util.Scanner;
 
 /**
  *
- * @author jonat
+ * @author Jonathan Moze
  */
 public class Calculator {
 
+    /**
+     * tokenizer pour découper l'expression
+     */
     private Tokenizer tokenizer;
+    
+    /**
+     * le token courant
+     */
     private Token token;
+    
+    /**
+     * la table des variables
+     */
     private final TableVariables table = new TableVariables();
 
+    
+    /**
+     * Fonction prinpcipale de la calculatrice permettant d'analyser
+     * l'entrée de l'utilisateur et d'envoyer la réponse
+     * 
+     * @param line ligne d'entrée dans la calculatrice
+     * @return value la valeur du résultat
+     * 
+     * @throws SyntaxErrorException erreur de syntaxe dans la ligne
+     * @throws EvaluationErrorException  erreur de mathématiques
+     */
     public int evaluation(String line)
             throws SyntaxErrorException, EvaluationErrorException {
 
@@ -31,12 +53,26 @@ public class Calculator {
         return value;
     }
 
+    
+    /**
+     * fonction permettant de lever une excpetion si il y a une erreur de
+     * syntaxe
+     * 
+     * @param condition la condition de syntaxe
+     * @param message message d'erreur si la condition n'est pas bonne
+     * @throws SyntaxErrorException  erreur de syntaxe levée
+     */
     private void checkSyntax(boolean condition, String message) throws SyntaxErrorException {
         if (!condition) {
             throw new SyntaxErrorException(message);
         }
     }
 
+    /**
+     * Fonction permettant a la calculatrice de fonctionner plusieurs fois
+     * sans redémarrer l'application et permettant d'interagir avec
+     * l'utilisateur
+     */
     public void boucleInteraction() {
         Scanner in = new Scanner(System.in);
         System.out.println("Claculatrice : Entrez votre calcul");
@@ -65,7 +101,14 @@ public class Calculator {
         }
         System.out.println("Bye.");
     }
-
+    
+    
+    /**
+     *  Fonction permettant le calcul entre deux termes d'une l'expression
+     * @return expr l'expression resultat
+     * @throws SyntaxErrorException erreur de syntaxe dans l'expression
+     * @throws EvaluationErrorException erreur de calcul dans l'expression
+     */
     private Expr arbreExpr() throws SyntaxErrorException, EvaluationErrorException {
         Expr expr = arbreTerm();
         while (token.isSymbol("+") || token.isSymbol("-")) {
@@ -82,6 +125,12 @@ public class Calculator {
         return expr;
     }
 
+    /**
+     * fonction permettant de récuperer les valeurs numériques des nombres de
+     * l'expression
+     * @return value expression de la valeur du nombre
+     * @throws SyntaxErrorException erreur de syntaxe dans l'expression
+     */
     private Expr arbreNumber() throws SyntaxErrorException {
         checkSyntax(token.isNumber(), "Number expected");
         Expr value = Expr.constante(token.value());
@@ -90,6 +139,15 @@ public class Calculator {
         return value;
     }
 
+    
+    /**
+     * Fonction permettant de calculer un terme à partir de deux facteurs d'une
+     * expression.
+     * 
+     * @return value expression de la valeur résultat
+     * @throws SyntaxErrorException erreur de syntaxe dans l'expression
+     * @throws EvaluationErrorException erreur de mathématiques dans l'expression
+     */
     private Expr arbreTerm() throws SyntaxErrorException, EvaluationErrorException {
         Expr value = arbreFactor();
         while (token.isSymbol("*") || token.isSymbol("/")) {
@@ -111,6 +169,13 @@ public class Calculator {
         return value;
     }
 
+    
+    /**
+     * Fonction permettant de calculer un facteur a partir de nombres, de variables.
+     * @return expr l'expression du résultat calculé
+     * @throws SyntaxErrorException erreur de syntaxe
+     * @throws EvaluationErrorException erreur de mathématiques
+     */
     private Expr arbreFactor() throws SyntaxErrorException, EvaluationErrorException {
 
         Expr expr = Expr.constante(0);

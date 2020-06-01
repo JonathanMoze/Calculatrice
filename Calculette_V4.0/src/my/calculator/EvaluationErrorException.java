@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package my.calculator;
 
 /**
  *
- * @author jonat
+ * @author Jonathan Moze
  */
 public class EvaluationErrorException extends Exception{
     
+    /**
+     * Constructeur d'une exeption de calcul
+     * @param message message d'erreur
+     */
     public EvaluationErrorException(String message){
         super(message);
     }

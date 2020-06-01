@@ -1,18 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package my.calculator;
 
 /**
  *
- * @author jonat
+ * @author Jonathan Moze
  */
 public enum TokenType {
+    /**
+     * type nombre
+     */
     NUMBER,
+    /**
+     * type symbole
+     */
     SYMBOL,
+    /**
+     * type mot
+     */
     WORD,
+    /**
+     * type invalide
+     */
     INVALID,
+    /**
+     * type fini
+     */
     END,
 }
