@@ -46,7 +46,9 @@ public class Calculator {
         tokenizer = new Tokenizer(line);
         token = tokenizer.get();
 
-        int value = arbreExpr().valeur(table);
+        Expr expr =  arbreExpr();
+        System.out.println(expr.description());
+        int value = expr.valeur(table);
         checkSyntax(token.isFinish(), String.format("End of expression expected, %s found", token));
 
         return value;
@@ -87,6 +89,7 @@ public class Calculator {
             }
             try {
                 int value = evaluation(line);
+                
                 System.out.format("> %d\n", value);
             } catch (SyntaxErrorException ex) {
                 System.out.format(" ! Incorrect syntax : %s\n",
